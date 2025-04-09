@@ -1,0 +1,18 @@
+$primary-blue: #007bff;
+$deep-blue: #0367a6;
+$light-blue: #00f2fe;
+$glass-white: rgba(255, 255, 255, 0.95);
+$animation-duration: 0.4s;
+
+// src/styles/_mixins.scss
+@mixin floating-animation($duration: 25s) {
+  animation: float $duration infinite linear;
+}
+
+@mixin glass-effect($blur: 10px) {
+  background: $glass-white;
+  backdrop-filter: blur($blur);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    0 0 30px rgba(255, 255, 255, 0.2) inset;
+}
