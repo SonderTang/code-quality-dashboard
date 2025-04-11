@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import axios from 'axios';
+import { userLogin } from '../api';
+
 
 type User = {
   id?: number;
@@ -24,22 +25,34 @@ interface LoginDTO {
 }
 
 type AuthState = {
-  user: User | null
+  userInfo: User | null
   token: string | null
-  login: (credentials: LoginDTO) => Promise<void>
+  login: (credentials: LoginDTO, onSuccess?: () => void) => Promise<void>
   logout: () => void
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: null,
+      userInfo: null,
       token: null,
-      login: async (credentials) => {
-        const { data } = await axios.post('/auth/login', credentials)
-        set({ user: data.user, token: data.token })
+      login: async (credentials: LoginDTO, onSuccess?: () => void) => {
+        // const { data } = await axios.post('/auth/login', credentials)
+        // set({ user: data.user, token: data.token })
+        const res = await userLogin(credentials);
+        console.log('res', res);
+        const { data, message, success } = res.data;
+        if (!success) {
+          console.log('登录失败', message);
+          return;
+        } else {
+          onSuccess?.();
+        }
+        // messageApi.info('Hello, Ant Design!');
+
+        set({ userInfo: res.data, token: data?.token })
       },
-      logout: () => set({ user: null, token: null })
+      logout: () => set({ userInfo: null, token: null })
     }),
     {
       name: 'auth-storage',

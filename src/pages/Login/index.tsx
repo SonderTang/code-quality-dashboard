@@ -1,61 +1,65 @@
-import React, { useState } from 'react';
-import { useAuthStore } from '../../store/authStore';
+import React from 'react';
 import styles from './style.module.scss'
 import carbonLogo from '../../assets/images/carbon.png';
+import { useAuth } from '../../hooks/useAuth';
+import { Spin } from 'antd';
 
 const Login = () => {
-  const { login } = useAuthStore();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isHovered, setHovered] = useState(false);
-  // 状态管理类名
-  const [bgStyles, setBgStyles] = useState({
-    container: '',
-    formBg: ''
-  });
+  // const { login } = useAuthStore();
+
+  const { handleLogin, username, password, setUsername, setPassword } = useAuth();
+
+  // const [isHovered, setHovered] = useState(false);
+  // // 状态管理类名
+  // const [bgStyles, setBgStyles] = useState({
+  //   container: '',
+  //   formBg: ''
+  // });
 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    handleLogin({ username, password })
     // 登录逻辑
-    login({ username, password })
-      .then(() => {
-        // 登录成功后的逻辑，例如跳转
-        // ...
-      })
-      .catch(error => {
-        // 处理登录错误
-        console.error('登录失败:', error);
-      });
+    // login({ username, password })
+    //   .then(() => {
+    //     // 登录成功后的逻辑，例如跳转
+    //     // ...
+    //   })
+    //   .catch(error => {
+    //     // 处理登录错误
+    //     console.error('登录失败:', error);
+    //   });
   };
 
   // 点击事件处理器（合并版）
-  const handleButtonClick = (type: 'reset' | 'sec' | 'third') => (e: React.MouseEvent) => {
-    e.stopPropagation();
+  // const handleButtonClick = (type: 'reset' | 'sec' | 'third') => (e: React.MouseEvent) => {
+  //   e.stopPropagation();
 
-    const newStyles = {
-      container: '',
-      formBg: ''
-    };
+  //   const newStyles = {
+  //     container: '',
+  //     formBg: ''
+  //   };
 
-    switch (type) {
-      case 'reset':
-        break;
-      case 'sec':
-        newStyles.container = 'mystyleSec';
-        newStyles.formBg = 'mystyleSec';
-        break;
-      case 'third':
-        newStyles.container = 'mystylethird';
-        newStyles.formBg = 'mystylethird';
-        break;
-    }
+  //   switch (type) {
+  //     case 'reset':
+  //       break;
+  //     case 'sec':
+  //       newStyles.container = 'mystyleSec';
+  //       newStyles.formBg = 'mystyleSec';
+  //       break;
+  //     case 'third':
+  //       newStyles.container = 'mystylethird';
+  //       newStyles.formBg = 'mystylethird';
+  //       break;
+  //   }
 
-    setBgStyles(newStyles);
-  };
+  //   setBgStyles(newStyles);
+  // };
 
   return (
     <div className={styles.loginPage}>
+      <Spin size="large" />
       <header className={styles.topHeader}></header>
       <img src={carbonLogo} alt="Logo" className={styles.carbon} />
       <div id="mainCoantiner" className={styles.mainContainer}>
@@ -90,9 +94,6 @@ const Login = () => {
           <div className={styles.starfourth}></div>
           <div className={styles.starfifth}></div>
         </div>
-
-
-
 
         <div className={styles.loginForm}>
           <div className={styles.platformTitle}>

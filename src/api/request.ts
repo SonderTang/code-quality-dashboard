@@ -54,8 +54,8 @@ class Request {
     // 响应拦截
     this.instance.interceptors.response.use(
       (response: AxiosResponse<ApiResponse>) => {
-        const { code, data, message } = response.data;
-        if (code === 200) return data;
+        const { code, message } = response.data;
+        if (code === 200) return response;
         return Promise.reject(new Error(message || 'Error'));
       },
       (error: ApiError) => {

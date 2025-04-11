@@ -21,5 +21,14 @@ export default defineConfig({
         additionalData: `@import "@/styles/variables.scss";` // 自动注入变量
       }
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:10011',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 })
